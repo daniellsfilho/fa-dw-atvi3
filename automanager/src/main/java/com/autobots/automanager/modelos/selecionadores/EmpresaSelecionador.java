@@ -17,4 +17,14 @@ public class EmpresaSelecionador {
 		}
 		return selecionado;
 	}
+	
+	public Empresa selecionarRazaoSocial(List<Empresa> empresas, String razaoSocial) {
+		Empresa selecionada = null;
+		for (Empresa empresa : empresas) {
+			if (empresa.getRazaoSocial().equals(razaoSocial)) {
+				selecionada = empresa;
+			}
+		}
+		return selecionada;
+	}
 }

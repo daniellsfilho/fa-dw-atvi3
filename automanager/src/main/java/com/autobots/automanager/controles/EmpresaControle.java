@@ -60,8 +60,10 @@ public class EmpresaControle {
 	@PostMapping("/empresa/criar")
 	public ResponseEntity<?> criarEmpresa(@RequestBody EmpresaDTO empresaDTO){
 		HttpStatus status = HttpStatus.CONFLICT;
+		List<Empresa> empresas = repositorio.findAll();
 		Empresa novaEmpresa = criador.criar(empresaDTO);
-		if (novaEmpresa.getId() == null) {
+		Empresa empresa = selecionador.selecionarRazaoSocial(empresas, novaEmpresa.getRazaoSocial());
+		if (novaEmpresa.getId() == null && empresa == null) {
 			status = HttpStatus.CREATED;
 			repositorio.save(novaEmpresa);
 		}
