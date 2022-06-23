@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -116,6 +117,36 @@ public class VendaControle {
 			cliente.getVendas().add(novaVenda);
 			funcionario.getVendas().add(novaVenda);
 			empresa.getVendas().add(novaVenda);
+			
+			status = HttpStatus.OK;
+		}
+		
+		return new ResponseEntity<>(status);
+	}
+	
+	@DeleteMapping("/venda/deletar/{empresaId}/{vendaId}")
+	public ResponseEntity<?> deletarVenda(@PathVariable Long empresaId, @PathVariable Long vendaId){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		
+		List<Empresa> empresas = empresaRepositorio.findAll();
+		List<Usuario> usuarios = usuarioRepositorio.findAll();
+		List<Venda> vendas = repositorio.findAll();
+		
+		Venda selecionada = selecionador.selecionar(vendas, vendaId);
+		Empresa empresa = empresaSelecionador.selecionar(empresas, empresaId);
+		
+		if (selecionada != null && empresa != null) {
+			Usuario cliente = usuarioSelecionador.selecionar(usuarios, selecionada.getCliente().getId());
+			Usuario funcionario = usuarioSelecionador.selecionar(usuarios, selecionada.getFuncionario().getId());
+			
+			cliente.getVendas().remove(selecionada);
+			funcionario.getVendas().remove(selecionada);
+			empresa.getVendas().remove(selecionada);
+			
+			usuarioRepositorio.save(cliente);
+			usuarioRepositorio.save(funcionario);
+			empresaRepositorio.save(empresa);
+			repositorio.delete(selecionada);
 			
 			status = HttpStatus.OK;
 		}
