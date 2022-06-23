@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-import com.autobots.automanager.dtos.FornecedorDTO;
 import com.autobots.automanager.dtos.UsuarioDTO;
 import com.autobots.automanager.entidades.Usuario;
 import com.autobots.automanager.enumeracoes.PerfilUsuario;
@@ -35,15 +34,16 @@ public class CriadorUsuario {
 		return usuario;
 	}
 	
-	public void registrarMercadorias(FornecedorDTO fornecedorDTO) {
+	public void registrarMercadorias(UsuarioDTO fornecedorDTO) {
 		
-		fornecedorDTO.getMercadorias().forEach(mercadoria -> {
-			mercadoria.setCadastro(new Date());
-			mercadoria.setFabricao(new Date());
-		    mercadoria.setValidade(new Date());
-		    
-		    fornecedorDTO.getUsuario().getMercadorias().add(mercadoria);
-		});
+		if(fornecedorDTO.getMercadorias() != null) {
+			fornecedorDTO.getMercadorias().forEach(mercadoria -> {
+				mercadoria.setCadastro(new Date());
+				mercadoria.setFabricao(new Date());
+			    mercadoria.setValidade(new Date());
+			    
+			    fornecedorDTO.getUsuario().getMercadorias().add(mercadoria);
+			});
+		}
 	}
-	
 }
