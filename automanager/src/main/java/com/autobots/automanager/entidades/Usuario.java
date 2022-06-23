@@ -18,6 +18,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.autobots.automanager.dtos.VeiculoDTO;
 import com.autobots.automanager.enumeracoes.PerfilUsuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,7 @@ public class Usuario extends RepresentationModel<Usuario> {
 	private Set<Documento> documentos = new HashSet<>();
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Email> emails = new HashSet<>();
+	@JsonIgnore
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Credencial> credenciais = new HashSet<>();
 	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)

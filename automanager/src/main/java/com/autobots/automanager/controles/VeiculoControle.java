@@ -21,6 +21,7 @@ import com.autobots.automanager.modelos.ConversorVeiculo;
 import com.autobots.automanager.modelos.selecionadores.UsuarioSelecionador;
 import com.autobots.automanager.modelos.selecionadores.VeiculoSelecionador;
 import com.autobots.automanager.repositorios.UsuarioRepositorio;
+import com.autobots.automanager.repositorios.VeiculoDTORepositorio;
 import com.autobots.automanager.repositorios.VeiculoRepositorio;
 
 @RestController
@@ -36,6 +37,8 @@ public class VeiculoControle {
 	UsuarioRepositorio usuarioRepositorio;
 	@Autowired
 	UsuarioSelecionador usuarioSelecionador;
+	@Autowired
+	VeiculoDTORepositorio veiculoDTORepositorio;
 	
 	@GetMapping("/veiculo/{id}")
 	public ResponseEntity<Veiculo> obterVeiculo(@PathVariable Long id){
@@ -77,6 +80,7 @@ public class VeiculoControle {
 				conversor.converter(veiculo, veiculoDTO);
 				usuario.getVeiculos().add(veiculoDTO);
 				usuarioRepositorio.save(usuario);
+				veiculoDTORepositorio.save(veiculoDTO);
 				status = HttpStatus.OK;
 			}
 		}
@@ -101,6 +105,7 @@ public class VeiculoControle {
 			usuario.getVeiculos().removeAll(selecionados);
 			usuarioRepositorio.save(usuario);
 			repositorio.delete(selecionado);
+			veiculoDTORepositorio.delete(selecionados.get(0));
 			status = HttpStatus.OK;
 		}
 		

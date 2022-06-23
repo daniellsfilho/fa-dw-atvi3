@@ -15,6 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.autobots.automanager.dtos.UsuarioVendaDTO;
+import com.autobots.automanager.dtos.VeiculoDTO;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -30,13 +33,13 @@ public class Venda {
 	@Column(nullable = false, unique = true)
 	private String identificacao;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	private Usuario cliente;
+	private UsuarioVendaDTO cliente;
 	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	private Usuario funcionario;
+	private UsuarioVendaDTO funcionario;
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Mercadoria> mercadorias = new HashSet<>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
 	private Set<Servico> servicos = new HashSet<>();
 	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-	private Veiculo veiculo;
+	private VeiculoDTO veiculo;
 }
